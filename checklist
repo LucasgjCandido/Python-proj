@@ -1,0 +1,46 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def add_task():
+    task = task_entry.get()
+    if task:
+        tasks_listbox.insert(tk.END, task)
+        task_entry.delete(0, tk.END)
+    else:
+        messagebox.showwarning("Aviso", "Digite uma tarefa!")
+
+def remove_task():
+    try:
+        selected_task_index = tasks_listbox.curselection()[0]
+        tasks_listbox.delete(selected_task_index)
+    except IndexError:
+        messagebox.showwarning("Aviso", "Selecione uma tarefa para remover!")
+
+def mark_done():
+    try:
+        selected_task_index = tasks_listbox.curselection()[0]
+        task_text = tasks_listbox.get(selected_task_index)
+        tasks_listbox.delete(selected_task_index)
+        tasks_listbox.insert(tk.END, f"✔ {task_text}")
+    except IndexError:
+        messagebox.showwarning("Aviso", "Selecione uma tarefa para marcar como concluída!")
+
+root = tk.Tk()
+root.title("To-Do List")
+
+task_entry = tk.Entry(root, width=40)
+task_entry.pack(pady=10)
+
+add_button = tk.Button(root, text="Adicionar", command=add_task)
+add_button.pack()
+
+remove_button = tk.Button(root, text="Remover", command=remove_task)
+remove_button.pack()
+
+done_button = tk.Button(root, text="Concluir", command=mark_done)
+done_button.pack()
+
+tasks_listbox = tk.Listbox(root, width=50, height=10)
+tasks_listbox.pack(pady=10)
+
+root.mainloop()
